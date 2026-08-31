@@ -2,7 +2,7 @@
 version: alpha
 name: Bullet Identity Source
 description: >-
-  Forma compilada do 00 Tokens And Manifest (versao-tokens v1.15) do
+  Forma compilada do 00 Tokens And Manifest (versao-tokens v1.17) do
   Bulletpedia. O Bulletpedia é a única fonte (P12): este arquivo é gerado,
   nunca editado à mão. Divergência se corrige no Manifest e recompila.
 colors:
@@ -274,11 +274,52 @@ components:
   sheet:
     backgroundColor: "{colors.surface-card}"
     rounded: "{rounded.2xl}"
+  switch-track-off:
+    backgroundColor: "{colors.surface-card}"
+    rounded: "{rounded.pill}"
+  switch-track-on:
+    backgroundColor: "{colors.surface-elevated}"
+    rounded: "{rounded.pill}"
+  switch-thumb-off:
+    backgroundColor: "{colors.grey-350}"
+    rounded: "{rounded.pill}"
+  switch-thumb-on:
+    backgroundColor: "{colors.status-live}"
+    rounded: "{rounded.pill}"
+  tooltip:
+    backgroundColor: "{colors.surface-elevated}"
+    textColor: "{colors.text-primary}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.space-3}"
+  toast:
+    backgroundColor: "{colors.surface-elevated}"
+    textColor: "{colors.text-primary}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.space-3}"
+  banner:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.text-primary}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.space-3}"
+  dialog-confirm:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.text-primary}"
+    rounded: "{rounded.lg}"
+    padding: "{spacing.space-3}"
+    width: "{spacing.doc-sm}"
+  tab-active:
+    textColor: "{colors.text-primary}"
+    height: "{spacing.control-lg}"
+  tab-inactive:
+    textColor: "{colors.text-secondary}"
+    height: "{spacing.control-lg}"
+  tab-indicator:
+    backgroundColor: "{colors.accent}"
 ---
 
 # Bullet Identity Source
 
-> **Compilado do Bulletpedia** · `04 Growth/01 Foundation/Brand/Identity Source/00 Tokens And Manifest.md` · `versao-tokens: v1.15` (2026-08-29).
+> **Compilado do Bulletpedia** · `04 Growth/01 Foundation/Brand/Identity Source/00 Tokens And Manifest.md` · `versao-tokens: v1.17` (2026-08-31).
 > O sistema chama-se **Identity Source**, nunca "design system" (P11). O Bulletpedia é a única fonte (P12): este arquivo é forma compilada, e quando divergir do Manifest, o Manifest manda. Valores marcados **PROPOSTA v0** ainda não existem no Manifest: aguardam aprovação do Léo (seção 9) antes de virarem lei.
 
 ## Overview
@@ -338,11 +379,16 @@ Escala fechada de raios, papel fixado por componente (P18):
 
 ## Components
 
-As matrizes completas (anatomia × estado, item por item) vivem no Bulletpedia em `Identity Source/02 Components/` — 16 Items e 16 Blocos escritos. Este arquivo compila os contratos mais usados; **em conflito, a matriz do pedia manda.**
+As matrizes completas (anatomia × estado, item por item) vivem no Bulletpedia em `Identity Source/02 Components/` — 22 Items e 20 Blocos escritos. Este arquivo compila os contratos mais usados; **em conflito, a matriz do pedia manda.**
 
 - **Button** — uma altura só (`target-min` 48), raio `pill`. Primário: container `surface-elevated`, rótulo `text-primary`. **O acento nunca preenche o container**: botão que precisa de destaque usa elevação, não cor. CTA de conclusão de fluxo (app): container claro `text-brand` com rótulo `surface` — ênfase máxima, um por contexto. Secundário: transparente com `border-subtle` e rótulo `text-brand`. Ação destrutiva usa `status-error` de fundo **só na segunda pergunta de apagar**. Disabled: `surface-card` + `text-disabled`, sem toque. Confirmação irreversível em toque **segura em vez de tocar**: pressão contínua com progresso visível (`motion-grow`, linear); soltar cancela.
 - **Text Field** — superfície **um degrau acima do container em que está** (sobre página → `surface-card`; sobre card → `surface-elevated`), sem borda em repouso: o salto de nível separa. Raio `md`. Foco pelo **anel interno da própria caixa** (`border-field-focus`, 2px), nunca o anel verde externo. Erro: `border-error` 1.5px interno + mensagem em `text-error` — nunca só o anel. Placeholder nunca substitui o rótulo. Variante busca: lupa à esquerda, raio `pill`, altura `control-md` estendida a `target-min`, sem fio.
 - **Estados (todo controle)** — hover e pressed são **véus por cima** (`overlay-hover`/`overlay-press` em pseudo-elemento), nunca troca de background (P14). Estado nunca é comunicado só por cor. Foco tem dois portadores: campo foca pela própria caixa; todo controle **sem** caixa de digitação foca pelo anel externo `border-focus` (verde, 2px, offset 2, raio `sm`). Nenhum controle focalizável fica sem portador de foco.
+- **Switch** — liga preferência de **efeito imediato** (checkbox marca intenção que um CTA confirma). O portador do estado é a **posição do thumb**; o acento entra como segundo portador e mora **só no thumb**, nunca no trilho — trilho de verde seria acento em superfície. Trilho separa por salto de nível: `surface-card` desligado, `surface-elevated` ligado.
+- **Tooltip** — dica curta ancorada no gatilho, em `surface-elevated` com sombra (ela flutua de verdade). **Nunca carrega informação essencial**: a postura de estado já diz que hover não pode ser portador único. Nada interativo dentro; todo controle só de ícone tem uma.
+- **Os três avisos, e a fronteira entre eles** — **Toast** sai sozinho e não bloqueia (feedback do que já aconteceu); **Banner** persiste no contexto até o usuário agir; **Dialog de Confirmação** bloqueia e pede decisão. Erro de validação de campo não é nenhum dos três: vive no campo.
+- **Dialog de Confirmação** — a segunda pergunta, único lugar onde o botão usa fundo de erro. Foco entra ao abrir e volta ao gatilho ao fechar, `Esc` cancela, **clique fora não fecha**, e o foco inicial é o cancelar mesmo quando a ação destrutiva está acima dele em tela estreita. O rótulo diz o que a ação faz ("Apagar projeto"), nunca "OK".
+- **Tabs** — navegação entre views irmãs; o controle que escolhe um valor é o Segmented Button. A régua ativa é `accent` com 2px, confirmando o precedente: **acento vive em indicador, nunca em superfície**. No máximo 6 a 8 abas antes do overflow; aba sem permissão não aparece, nunca aparece desabilitada.
 - **Bloco arranja, não repinta** (P14): um bloco nunca redefine cor, borda ou estado de um item que monta. Item responde a interação; bloco responde a conteúdo (cheio · vazio · carregando · erro · sem permissão). Componente com mais de uma variante fixa a condição de uso de cada uma — variante nunca é escolha de gosto.
 
 ## Do's and Don'ts
@@ -405,7 +451,8 @@ Nove lanes em três tipos (P15): **gabarito** (Email, Decks, Materiais Físicos 
 
 ## Pendências e governança
 
-- Este arquivo compila `versao-tokens: v1.15`. Mudança nasce no Manifest; este arquivo regenera e o tema Astryx (`export css-vars`) regenera junto.
+- Este arquivo compila `versao-tokens: v1.17`. Mudança nasce no Manifest; este arquivo regenera e o tema Astryx (`export css-vars`) regenera junto.
 - **PROPOSTAS v0 aguardando aprovação do Léo** (entram na seção 9 do Manifest antes de virarem lei): paleta categórica `chart-1…5` + `chart-other` (fecha a pendência 3) · `skeleton` = `surface-elevated` para estado carregando · direção de sequencial/divergente (acima).
-- Pendências do Manifest que este arquivo **não** resolve (seguem lá): ferramenta canônica de motion (5), modelo canônico de e-mail (6), link de e-mail (7), superfícies de e-mail (8), `border-box` como quarto fio (9), `text-primary` no Website (10).
+- Pendências do Manifest que este arquivo **não** resolve (seguem lá): ferramenta canônica de motion (5), modelo canônico de e-mail (6), link de e-mail (7), superfícies de e-mail (8), `border-box` como quarto fio (9), `text-primary` no Website (10), dimensão da caixa do checkbox (11), dimensão do trilho e do thumb do Switch (12), véu de fundo de overlay (13).
+- As pendências 11, 12 e 13 nasceram das levas de componentes: cada doc declarou a lacuna em vez de inventar valor. Enquanto elas estiverem abertas, este arquivo **não** publica token para essas medidas.
 - Aprovação de qualquer mudança no Identity Source é do Léo. Fora de `Identity Source/`, não se escreve sem aprovação.
