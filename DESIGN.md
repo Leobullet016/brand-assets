@@ -2,7 +2,7 @@
 version: alpha
 name: Bullet Identity Source
 description: >-
-  Forma compilada do 00 Tokens And Manifest (versao-tokens v1.17) do
+  Forma compilada do 00 Tokens And Manifest (versao-tokens v1.18) do
   Bulletpedia. O Bulletpedia é a única fonte (P12): este arquivo é gerado,
   nunca editado à mão. Divergência se corrige no Manifest e recompila.
 colors:
@@ -319,7 +319,7 @@ components:
 
 # Bullet Identity Source
 
-> **Compilado do Bulletpedia** · `04 Growth/01 Foundation/Brand/Identity Source/00 Tokens And Manifest.md` · `versao-tokens: v1.17` (2026-08-31).
+> **Compilado do Bulletpedia** · `04 Growth/01 Foundation/Brand/Identity Source/00 Tokens And Manifest.md` · `versao-tokens: v1.18` (2026-09-04).
 > O sistema chama-se **Identity Source**, nunca "design system" (P11). O Bulletpedia é a única fonte (P12): este arquivo é forma compilada, e quando divergir do Manifest, o Manifest manda. Valores marcados **PROPOSTA v0** ainda não existem no Manifest: aguardam aprovação do Léo (seção 9) antes de virarem lei.
 
 ## Overview
@@ -379,7 +379,7 @@ Escala fechada de raios, papel fixado por componente (P18):
 
 ## Components
 
-As matrizes completas (anatomia × estado, item por item) vivem no Bulletpedia em `Identity Source/02 Components/` — 22 Items e 20 Blocos escritos. Este arquivo compila os contratos mais usados; **em conflito, a matriz do pedia manda.**
+As matrizes completas (anatomia × estado, item por item) vivem no Bulletpedia em `Identity Source/02 Components/` — 31 Items e 27 Blocos escritos. Este arquivo compila os contratos mais usados; **em conflito, a matriz do pedia manda.**
 
 - **Button** — uma altura só (`target-min` 48), raio `pill`. Primário: container `surface-elevated`, rótulo `text-primary`. **O acento nunca preenche o container**: botão que precisa de destaque usa elevação, não cor. CTA de conclusão de fluxo (app): container claro `text-brand` com rótulo `surface` — ênfase máxima, um por contexto. Secundário: transparente com `border-subtle` e rótulo `text-brand`. Ação destrutiva usa `status-error` de fundo **só na segunda pergunta de apagar**. Disabled: `surface-card` + `text-disabled`, sem toque. Confirmação irreversível em toque **segura em vez de tocar**: pressão contínua com progresso visível (`motion-grow`, linear); soltar cancela.
 - **Text Field** — superfície **um degrau acima do container em que está** (sobre página → `surface-card`; sobre card → `surface-elevated`), sem borda em repouso: o salto de nível separa. Raio `md`. Foco pelo **anel interno da própria caixa** (`border-field-focus`, 2px), nunca o anel verde externo. Erro: `border-error` 1.5px interno + mensagem em `text-error` — nunca só o anel. Placeholder nunca substitui o rótulo. Variante busca: lupa à esquerda, raio `pill`, altura `control-md` estendida a `target-min`, sem fio.
@@ -441,9 +441,9 @@ A Camada 0 não define cor de série de gráfico e "dashboards inventam cor" (pe
 
 **Asset não se redesenha: copia-se do banco, byte a byte.** Recriar asset existente é erro auditável; asset novo entra no banco **antes** de aparecer em peça.
 
-- **Logos** — repo canônico `Leobullet016/brand-assets/svg/`: 5 lockups (`bullet`, `b` icon, `bulletcash`, `bulletpay`, `bulletpro`) em preto e branco. Os `_white` têm `#fff` fixo; os `_black` não declaram fill (recoloríveis via CSS). Regras de uso na seção Do's and Don'ts.
+- **Logos** — repo canônico `Leobullet016/brand-assets/svg/`: 5 lockups (`bullet`, `b` icon, `bulletcash`, `bulletpay`, `bulletpro`) em preto e branco. Os `_white` têm `#fff` fixo; os `_black` não declaram fill (recoloríveis via CSS). Regras de uso na seção Do's and Don'ts. Marcas de terceiros, parceiros e cripto em `brand-assets/logos/` (`third-party/` em currentColor, `partners/` e `crypto/` PNG como vieram): banco `Identity Source/03 Assets/Logos.md`. Marca nunca se redesenha.
 - **Backgrounds noise** — `brand-assets/backgrounds/`: 14 PNGs 1920×1080 em escala de cinza. Textura: `noise-opacity` 5–15%, sempre transparente sobre `black-pure`.
-- **Ícones** — spec: `viewBox="0 0 24 24"` sem width/height, coordenadas 2–22, `stroke-width` 2, linecap/linejoin `round`, `currentColor`, par outline + filled com geometria idêntica, kebab-case, máximo 5 shapes, sem raster/sombra/gradiente/texto. Ativo de navegação usa **filled**; demais, **outline**. Banco: `Identity Source/03 Assets/Icons.md` (31 canônicos + marcas). Bandeiras: `03 Assets/Flags.md`. Em e-mail, ícone é raster por URL.
+- **Ícones** — spec: `viewBox="0 0 24 24"` sem width/height, coordenadas 2–22, `stroke-width` 2, linecap/linejoin `round`, `currentColor`, par outline + filled com geometria idêntica, kebab-case, máximo 5 shapes, sem raster/sombra/gradiente/texto. Ativo de navegação usa **filled**; demais, **outline**. Banco: `Identity Source/03 Assets/Icons.md` (76 canônicos; marcas no `Logos.md`). Bandeiras: `03 Assets/Flags.md` (BRL, USD, EUR, ARS, JPY, GBP — PB por filtro de render, sem moldura). Em e-mail, ícone é raster por URL.
 
 ## Lanes (contextos de aplicação)
 
@@ -451,8 +451,8 @@ Nove lanes em três tipos (P15): **gabarito** (Email, Decks, Materiais Físicos 
 
 ## Pendências e governança
 
-- Este arquivo compila `versao-tokens: v1.17`. Mudança nasce no Manifest; este arquivo regenera e o tema Astryx (`export css-vars`) regenera junto.
+- Este arquivo compila `versao-tokens: v1.18`. Mudança nasce no Manifest; este arquivo regenera e o tema Astryx (`export css-vars`) regenera junto.
 - **PROPOSTAS v0 aguardando aprovação do Léo** (entram na seção 9 do Manifest antes de virarem lei): paleta categórica `chart-1…5` + `chart-other` (fecha a pendência 3) · `skeleton` = `surface-elevated` para estado carregando · direção de sequencial/divergente (acima).
-- Pendências do Manifest que este arquivo **não** resolve (seguem lá): ferramenta canônica de motion (5), modelo canônico de e-mail (6), link de e-mail (7), superfícies de e-mail (8), `border-box` como quarto fio (9), `text-primary` no Website (10), dimensão da caixa do checkbox (11), dimensão do trilho e do thumb do Switch (12), véu de fundo de overlay (13).
+- Pendências do Manifest que este arquivo **não** resolve (seguem lá): ferramenta canônica de motion (5), modelo canônico de e-mail (6), link de e-mail (7), superfícies de e-mail (8), `border-box` como quarto fio (9), `text-primary` no Website (10), dimensão da caixa do checkbox (11), dimensão do trilho e do thumb do Switch (12), véu de fundo de overlay (13), render de ícone acima de 22 (14), dimensão do ladrilho de carteira (15).
 - As pendências 11, 12 e 13 nasceram das levas de componentes: cada doc declarou a lacuna em vez de inventar valor. Enquanto elas estiverem abertas, este arquivo **não** publica token para essas medidas.
 - Aprovação de qualquer mudança no Identity Source é do Léo. Fora de `Identity Source/`, não se escreve sem aprovação.
