@@ -8,4 +8,4 @@ Marcas da Bullet em SVG, para uso por link público. A regra de uso mora no Iden
 - `<nome>_logo_full_*`: a variante do logo com nome, o `bullet.` com o nome embaixo.
 - `_white` sobre fundo escuro, `_black` sobre fundo claro.
 
-Os logos com nome saem de `tools/logo_com_nome.py`.
+Os logos com nome saem de `tools/logo_com_nome.py`. Logo que já existia fica como era: `arts_logo_white.svg` é o logo próprio da Arts, o mesmo arquivo da Biblioteca de marca.
