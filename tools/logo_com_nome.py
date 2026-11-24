@@ -9,7 +9,7 @@ Roda com Python 3 puro, sem instalar nada. As letras da Open Sans Light em curva
 o kerning da fonte e os arquivos oficiais do b. e do bullet. estão embutidos.
 
 Uso:
-    python3 logo_com_nome.py "nome" [--saida PASTA]
+    python3 logo_com_nome.py "nome" [--saida PASTA] [--duas-linhas]
 
 O nome entra como vai no logo, já com a regra de nome aplicada
 (Bullet Tasks -> tasks; Bulletpedia -> bulletpedia; Identity Source -> identity source).
@@ -19,6 +19,10 @@ Gera quatro SVG em curvas:
     <nome>_logo_black.svg        b. com o nome ao lado, preto
     <nome>_logo_full_white.svg   bullet. com o nome embaixo, branco (a variante)
     <nome>_logo_full_black.svg   bullet. com o nome embaixo, preto
+
+Com --duas-linhas, nome de duas palavras ganha também a variante com o nome em
+duas linhas, uma palavra por linha (o b. com o nome ao lado é sempre uma linha):
+    <nome>_logo_full_2lines_white.svg e <nome>_logo_full_2lines_black.svg
 
 As letras embutidas vêm da Open Sans (Copyright 2020 The Open Sans Project Authors),
 sob a SIL Open Font License 1.1, que acompanha este arquivo em OFL-OpenSans.txt.
@@ -118,15 +122,23 @@ def lado_a_lado(nome, fill):
     return svg(f"0 {fmt(topo)} {fmt(xmax)} {fmt(fundo - topo)}", fill, B["paths"], d)
 
 
-def completo(nome, fill):
-    """Variante: o bullet. com o nome embaixo, alinhado pela borda esquerda do b."""
+def completo(nome, fill, duas_linhas=False):
+    """Variante: o bullet. com o nome embaixo, alinhado pela borda esquerda do b.
+    Em duas linhas, uma palavra por linha, cada uma alinhada pela borda esquerda do b;
+    entre as linhas, o mesmo vão de três quartos de ponto, da descida de uma à haste da outra."""
     s = LOGO["b_h"] / D_TOP
     base = LOGO["b_h"] + VAO_BAIXO + D_TOP * s
-    _, xmin, _ = desenha(nome, s, 0.0, base)
-    d, _, xmax = desenha(nome, s, -xmin, base)
-    largura = max(LOGO["w"], xmax)
-    fundo = base - DATA["desc_max"] * s
-    return svg(f"0 0 {fmt(largura)} {fmt(fundo)}", fill, LOGO["paths"], d)
+    passo = -DATA["desc_max"] * s + VAO_BAIXO + D_TOP * s
+    linhas = nome.split(" ") if duas_linhas else [nome]
+    partes, largura = [], LOGO["w"]
+    for k, linha in enumerate(linhas):
+        b = base + k * passo
+        _, xmin, _ = desenha(linha, s, 0.0, b)
+        d, _, xmax = desenha(linha, s, -xmin, b)
+        partes.append(d)
+        largura = max(largura, xmax)
+    fundo = base + (len(linhas) - 1) * passo - DATA["desc_max"] * s
+    return svg(f"0 0 {fmt(largura)} {fmt(fundo)}", fill, LOGO["paths"], "".join(partes))
 
 
 def normaliza(nome):
@@ -146,8 +158,10 @@ def slug(nome):
     return "-".join(s.split())
 
 
-def gera(nome, saida="."):
+def gera(nome, saida=".", duas_linhas=False):
     nome = normaliza(nome)
+    if duas_linhas and len(nome.split(" ")) != 2:
+        raise SystemExit("a quebra em duas linhas vale para nome de duas palavras")
     if nome.startswith("bullet "):
         print("aviso: pela regra de nome, Bullet como palavra própria sai do logo "
               "(Bullet Tasks vira tasks)", file=sys.stderr)
@@ -159,15 +173,22 @@ def gera(nome, saida="."):
             with open(caminho, "w", encoding="utf-8") as f:
                 f.write(fn(nome, fill))
             feitos.append(caminho)
+        if duas_linhas:
+            caminho = os.path.join(saida, f"{slug(nome)}_logo_full_2lines_{tom}.svg")
+            with open(caminho, "w", encoding="utf-8") as f:
+                f.write(completo(nome, fill, True))
+            feitos.append(caminho)
     return feitos
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Gera o logo com nome da Bullet, pela regra do Identity Source.")
     ap.add_argument("nome", help="o nome como vai no logo, já com a regra de nome aplicada")
-    ap.add_argument("--saida", default=".", help="pasta onde gravar os quatro SVG")
+    ap.add_argument("--saida", default=".", help="pasta onde gravar os SVG")
+    ap.add_argument("--duas-linhas", action="store_true",
+                    help="nome de duas palavras: grava também a variante com o nome em duas linhas")
     a = ap.parse_args(argv)
-    print("\n".join(gera(a.nome, a.saida)))
+    print("\n".join(gera(a.nome, a.saida, a.duas_linhas)))
 
 
 if __name__ == "__main__":
